@@ -1,7 +1,13 @@
+import React from "react";
+import Header from "./components/Header";
+
 const App = () => {
   return (
     <>
-      <h1>Welcome to Shopilla</h1>
+      <Header></Header>
+      <main>
+        <h1>Welcome to Shopilla</h1>
+      </main>
     </>
   );
 };
