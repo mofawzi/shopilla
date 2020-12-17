@@ -1,0 +1,14 @@
+{
+  "name": "shopilla",
+  "version": "1.0.0",
+  "description": "MERN shopping cart app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mohamed Fawzy",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
