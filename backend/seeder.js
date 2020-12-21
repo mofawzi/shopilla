@@ -34,7 +34,7 @@ const importData = async () => {
     });
 
     // All product data including the admin user within it
-    await Product.insertMany(products);
+    await Product.insertMany(sampleProducts);
 
     console.log("Data Imported!".green.inverse);
     process.exit();
