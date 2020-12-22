@@ -1,8 +1,9 @@
 import express from "express";
-import products from "./data/products.js";
 import dotenv from "dotenv";
 import colors from "colors";
 import connectDB from "./config/db.js";
+
+import productRoutes from "./routes/productRoutes.js";
 
 // Access environment variables
 dotenv.config();
@@ -12,18 +13,11 @@ connectDB();
 
 const app = express();
 
+// Home Route
 app.get("/", (req, res) => res.send("API is running... "));
 
-// Get all products
-app.get("/api/products", (req, res) => {
-  res.json(products);
-});
-
-// Get product with id
-app.get("/api/products/:id", (req, res) => {
-  const product = products.find((p) => p._id === req.params.id);
-  res.json(product);
-});
+// Product routes
+app.use("/api/product", productRoutes);
 
 // Setting up port
 const PORT = process.env.PORT || 5000;
