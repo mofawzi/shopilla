@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import colors from "colors";
 import connectDB from "./config/db.js";
+import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 import productRoutes from "./routes/productRoutes.js";
 
@@ -16,8 +17,14 @@ const app = express();
 // Home Route
 app.get("/", (req, res) => res.send("API is running... "));
 
-// Product routes
+// Product routes middleware
 app.use("/api/products", productRoutes);
+
+// Error middleware 404
+app.use(notFound);
+
+// Error middleware wrong id
+app.use(errorHandler);
 
 // Setting up port
 const PORT = process.env.PORT || 5000;
