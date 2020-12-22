@@ -17,7 +17,7 @@ const app = express();
 app.get("/", (req, res) => res.send("API is running... "));
 
 // Product routes
-app.use("/api/product", productRoutes);
+app.use("/api/products", productRoutes);
 
 // Setting up port
 const PORT = process.env.PORT || 5000;
