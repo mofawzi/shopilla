@@ -4,6 +4,7 @@ import { Row, Col } from "react-bootstrap";
 import Product from "../components/Product";
 import { listProducts } from "../actions/productActions";
 import Loader from "../components/Loader";
+import Message from "../components/Message";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ const HomeScreen = () => {
 
   const { loading, error, products } = productList;
 
-  // Firing the action
+  // Firing the action once the component initialized
   useEffect(() => {
     dispatch(listProducts());
   }, [dispatch]);
@@ -27,7 +28,7 @@ const HomeScreen = () => {
           <Loader />
         ) : // Check if errors
         error ? (
-          <h3>{error}</h3>
+          <Message varient="danger">{error}</Message>
         ) : (
           // Show Products
           <Row>
