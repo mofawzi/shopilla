@@ -18,7 +18,7 @@ import Message from "../components/Message";
 // Destructuring history and match to access the params object
 const ProductScreen = ({ history, match }) => {
   // Quantity in stock (Component level state)
-  const [qty, setQty] = useState(0);
+  const [qty, setQty] = useState(1);
 
   const dispatch = useDispatch();
 
