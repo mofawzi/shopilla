@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Row, Col } from "react-bootstrap";
 import Product from "../components/Product";
 import { listProducts } from "../actions/productActions";
+import Loader from "../components/Loader";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
@@ -23,7 +24,7 @@ const HomeScreen = () => {
       {
         // Check if loading
         loading ? (
-          <h2>Loading...</h2>
+          <Loader />
         ) : // Check if errors
         error ? (
           <h3>{error}</h3>
