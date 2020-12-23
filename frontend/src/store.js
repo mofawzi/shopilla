@@ -15,12 +15,12 @@ const reducer = combineReducers({
 });
 
 // Get cart items from local storage
-const cartITemsFromStorage = localStorage.getItem("cartItems")
+const cartItemsFromStorage = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems"))
   : [];
 
 const initialState = {
-  cart: { cartITemsFromStorage },
+  cart: { cartItemsFromStorage },
 };
 
 // Middleware for async work
