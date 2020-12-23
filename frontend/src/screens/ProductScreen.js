@@ -15,8 +15,8 @@ import { listProductDetails } from "../actions/productActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
 
-// Destructuring match to access the params object
-const ProductScreen = ({ match }) => {
+// Destructuring history and match to access the params object
+const ProductScreen = ({ history, match }) => {
   // Quantity in stock (Component level state)
   const [qty, setQty] = useState(0);
 
@@ -30,6 +30,12 @@ const ProductScreen = ({ match }) => {
   useEffect(() => {
     dispatch(listProductDetails(match.params.id));
   }, [dispatch, match]);
+
+  // Handling add to cart button functionality
+  const addToCartHandler = () => {
+    // Go to cart page with the quantity param
+    history.push(`/cart/${match.params.id}?qty=${qty}`);
+  };
 
   return (
     <>
@@ -125,6 +131,7 @@ const ProductScreen = ({ match }) => {
 
                   <ListGroup.Item>
                     <Button
+                      onClick={addToCartHandler}
                       className="btn-block"
                       type="button"
                       disabled={product.countInStock === 0}
