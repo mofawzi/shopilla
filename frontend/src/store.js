@@ -6,6 +6,7 @@ import {
   productDetailsReducer,
 } from "./reducers/productReducers";
 import { cartReducer } from "./reducers/cartReducers";
+
 // Main Reducer
 const reducer = combineReducers({
   productList: productListReducer,
@@ -13,7 +14,14 @@ const reducer = combineReducers({
   cart: cartReducer,
 });
 
-const initialState = {};
+// Get cart items from local storage
+const cartITemsFromStorage = localStorage.getItem("cartItems")
+  ? JSON.parse(localStorage.getItem("cartItems"))
+  : [];
+
+const initialState = {
+  cart: { cartITemsFromStorage },
+};
 
 // Middleware for async work
 const middleware = [thunk];
