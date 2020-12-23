@@ -1,7 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Row, Col, Image, ListGroup, Card, Button } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Image,
+  ListGroup,
+  Card,
+  Button,
+  Form,
+} from "react-bootstrap";
 import Rating from "../components/Rating";
 import { listProductDetails } from "../actions/productActions";
 import Loader from "../components/Loader";
@@ -9,6 +17,9 @@ import Message from "../components/Message";
 
 // Destructuring match to access the params object
 const ProductScreen = ({ match }) => {
+  // Quantity in stock (Component level state)
+  const [qty, setQty] = useState(0);
+
   const dispatch = useDispatch();
 
   // Get product details from store
@@ -85,6 +96,32 @@ const ProductScreen = ({ match }) => {
                       </Col>
                     </Row>
                   </ListGroup.Item>
+
+                  {/* Handling quantity in stock of the product*/}
+                  {product.countInStock > 0 && (
+                    <ListGroup.Item>
+                      <Row>
+                        <Col>Quantity:</Col>
+                        <Col>
+                          <Form.Control
+                            as="select"
+                            value={qty}
+                            onChange={(e) => setQty(e.target.value)}
+                          >
+                            {/* Make the count of stock as array values */}
+                            {[...Array(product.countInStock).keys()].map(
+                              (x) => (
+                                // As array starts from 0 --> make it starts from 1
+                                <option key={x + 1} value={x + 1}>
+                                  {x + 1}
+                                </option>
+                              )
+                            )}
+                          </Form.Control>
+                        </Col>
+                      </Row>
+                    </ListGroup.Item>
+                  )}
 
                   <ListGroup.Item>
                     <Button
