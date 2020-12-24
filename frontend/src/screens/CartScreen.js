@@ -11,7 +11,7 @@ import {
   Card,
 } from "react-bootstrap";
 import Message from "../components/Message";
-import { addToCart } from "../actions/cartActions";
+import { addToCart, removeFromCart } from "../actions/cartActions";
 
 // Distructure props
 const CartScreen = ({ match, location, history }) => {
@@ -35,7 +35,7 @@ const CartScreen = ({ match, location, history }) => {
   const { cartItems } = cart;
 
   const removeFromCartHandler = (id) => {
-    console.log("removed");
+    dispatch(removeFromCart(id));
   };
 
   const checkoutHandler = () => {
