@@ -20,7 +20,7 @@ const cartItemsFromStorage = localStorage.getItem("cartItems")
   : [];
 
 const initialState = {
-  cart: { cartItemsFromStorage },
+  cart: { cartItems: cartItemsFromStorage },
 };
 
 // Middleware for async work
