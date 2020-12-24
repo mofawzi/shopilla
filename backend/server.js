@@ -5,6 +5,7 @@ import connectDB from "./config/db.js";
 import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 import productRoutes from "./routes/productRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 // Access environment variables
 dotenv.config();
@@ -19,6 +20,9 @@ app.get("/", (req, res) => res.send("API is running... "));
 
 // Product routes middleware
 app.use("/api/products", productRoutes);
+
+// User routes middleware
+app.use("/api/users", userRoutes);
 
 // Accept json data in req body (instead of body parser)
 app.use(express.json());
