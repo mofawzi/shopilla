@@ -15,6 +15,9 @@ connectDB();
 
 const app = express();
 
+// Accept json data in req body (instead of body parser)
+app.use(express.json());
+
 // Home Route
 app.get("/", (req, res) => res.send("API is running... "));
 
@@ -23,9 +26,6 @@ app.use("/api/products", productRoutes);
 
 // User routes middleware
 app.use("/api/users", userRoutes);
-
-// Accept json data in req body (instead of body parser)
-app.use(express.json());
 
 // Error middleware 404
 app.use(notFound);
