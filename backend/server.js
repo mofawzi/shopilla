@@ -20,6 +20,9 @@ app.get("/", (req, res) => res.send("API is running... "));
 // Product routes middleware
 app.use("/api/products", productRoutes);
 
+// Accept json data in req body (instead of body parser)
+app.use(express.json());
+
 // Error middleware 404
 app.use(notFound);
 
