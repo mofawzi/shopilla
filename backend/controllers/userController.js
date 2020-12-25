@@ -2,7 +2,7 @@ import asyncHandler from "express-async-handler"; // To handle errors (instead o
 import User from "../models/userModel.js";
 import generateToken from "../utils/generateToken.js";
 
-// @desc    Auth user & get token
+// @desc    Login user & get token
 // @route   POST /api/users/login
 // @access  Public
 const authUser = asyncHandler(async (req, res) => {
@@ -31,7 +31,7 @@ const authUser = asyncHandler(async (req, res) => {
 // @route   GET /api/users/profile
 // @access  Private
 const getUserProfile = asyncHandler(async (req, res) => {
-  // Getting the user from the data in the token
+  // Check if the user is in the DB
   const user = await User.findById(req.user._id);
 
   if (user) {
@@ -87,4 +87,36 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-export { authUser, getUserProfile, registerUser };
+// @desc    Update user profile
+// @route   PUT /api/users/profile
+// @access  Private
+const updateUserProfile = asyncHandler(async (req, res) => {
+  // Check if the user is in the DB
+  const user = await User.findById(req.user._id);
+
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    // Check if the password is updated
+    if (req.body.password) {
+      user.password = req.body.password;
+    }
+
+    // Save user to DB
+    const updatedUser = await user.save();
+
+    // Return user's new data
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+      token: generateToken(updatedUser._id),
+    });
+  } else {
+    // If user is not found
+    throw new Error("User not found");
+  }
+});
+
+export { authUser, getUserProfile, registerUser, updateUserProfile };
