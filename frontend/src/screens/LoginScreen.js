@@ -7,9 +7,10 @@ import Loader from "../components/Loader";
 import { login } from "../actions/userActions ";
 
 const LoginScreen = () => {
-  // Set component level state
+  // Set component level state -> initialization
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   return <div></div>;
 };
 
