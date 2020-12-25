@@ -1,22 +1,47 @@
 import React, { useState, useEffect } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Form, Button, Row, Col } from "react-bootstrap";
-import { useDipatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
-import { login } from "../actions/userActions ";
+import { login } from "../actions/userActions";
 
-const LoginScreen = () => {
+const LoginScreen = ({ history, location }) => {
   // Set component level state -> initialization
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const submitHandler = () => {};
+  const dispatch = useDispatch();
+
+  // Fetch user data from the login state
+  const userLogin = useSelector((state) => state.userLogin);
+  const { loading, error, userInfo } = userLogin;
+
+  // Redirection handling
+  const redirect = location.search ? location.search.split("=")[1] : "/";
+
+  useEffect(() => {
+    if (userInfo) {
+      // If user is logged in -> back to redirection (homepage)
+      history.push(redirect);
+    }
+  }, [history, userInfo, redirect]);
+
+  const submitHandler = (e) => {
+    // To stop page from refreshing
+    e.preventDefault();
+
+    // Dispatch the login action
+    dispatch(login(email, password));
+  };
 
   return (
     <FormContainer>
       <h1>Sign In</h1>
+      {/* Check for loading or errors */}
+      {error && <Message varient="danger">{error}</Message>}
+      {loading && <Loader />}
 
       <Form onSubmit={submitHandler}>
         <Form.Group controlId="email">
@@ -47,7 +72,7 @@ const LoginScreen = () => {
       <Row className="py-3">
         <Col>
           New Customer?{" "}
-          <Link to={Redirect ? `/register?Redirect=${Redirect}` : "/register"}>
+          <Link to={redirect ? `/register?redirect=${redirect}` : "/register"}>
             Register
           </Link>
         </Col>
