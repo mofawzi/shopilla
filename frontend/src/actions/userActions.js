@@ -189,7 +189,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
   } catch (error) {
     // Failed to login
     dispatch({
-      type: USER_DETAILS_FAIL,
+      type: USER_UPDATE_PROFILE_FAIL,
       // First check for the error message in the backend
       payload:
         error.response && error.response.data.message
