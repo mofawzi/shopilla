@@ -7,6 +7,9 @@ import {
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
   USER_REGISTER_FAIL,
+  USER_DETAILS_REQUEST,
+  USER_DETAILS_SUCCESS,
+  USER_DETAILS_FAIL,
 } from "../constants/userConstants";
 
 export const login = (email, password) => async (dispatch) => {
@@ -99,6 +102,48 @@ export const register = (name, email, password) => async (dispatch) => {
     // Failed to login
     dispatch({
       type: USER_REGISTER_FAIL,
+      // First check for the error message in the backend
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// Get Profile
+export const getUserDetails = (id) => async (dispatch, getState) => {
+  try {
+    // Dispatch request action
+    dispatch({
+      type: USER_DETAILS_REQUEST,
+    });
+
+    // Get user token from state (from logged in user object)
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    // Send content type and the  token in the headers
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    // Make get profile request and destructure the data
+    const { data } = await axios.get(`/api/users/${id}`, config);
+
+    // Dispatch the success details action
+    dispatch({
+      type: USER_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    // Failed to login
+    dispatch({
+      type: USER_DETAILS_FAIL,
       // First check for the error message in the backend
       payload:
         error.response && error.response.data.message
