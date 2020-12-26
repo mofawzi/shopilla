@@ -10,6 +10,10 @@ import {
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
   USER_DETAILS_FAIL,
+  USER_UPDATE_PROFILE_REQUEST,
+  USER_UPDATE_PROFILE_SUCCESS,
+  USER_UPDATE_PROFILE_FAIL,
+  USER_UPDATE_PROFILE_RESET,
 } from "../constants/userConstants";
 
 export const login = (email, password) => async (dispatch) => {
@@ -111,7 +115,7 @@ export const register = (name, email, password) => async (dispatch) => {
   }
 };
 
-// Get Profile
+// Get user Profile
 export const getUserDetails = (id) => async (dispatch, getState) => {
   try {
     // Dispatch request action
@@ -138,6 +142,48 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
     // Dispatch the success details action
     dispatch({
       type: USER_DETAILS_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    // Failed to login
+    dispatch({
+      type: USER_DETAILS_FAIL,
+      // First check for the error message in the backend
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// Update user Profile
+export const updateUserProfile = (user) => async (dispatch, getState) => {
+  try {
+    // Dispatch request action
+    dispatch({
+      type: USER_UPDATE_PROFILE_REQUEST,
+    });
+
+    // Get user info from state (logged in user object)
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    // Send content type and the  token in the headers
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    // Make put request and destructure the data after updating
+    const { data } = await axios.put(`/api/users/profile`, user, config);
+
+    // Dispatch the success update action
+    dispatch({
+      type: USER_UPDATE_PROFILE_SUCCESS,
       payload: data,
     });
   } catch (error) {
