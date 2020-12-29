@@ -1,19 +1,29 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
-
 import FormContainer from "../components/FormContainer";
+import { saveShippingAddress } from "../actions/cartActions";
 
 const ShippingScreen = ({ history }) => {
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [postalCode, setPostalCode] = useState("");
-  const [country, setCountry] = useState("");
+  // Get shipping address from state (local storage)
+  const cart = useSelector((state) => state.cart);
+  const { shippingAddress } = cart;
+
+  // Get shipping address from local storage
+  const [address, setAddress] = useState(shippingAddress.address);
+  const [city, setCity] = useState(shippingAddress.city);
+  const [postalCode, setPostalCode] = useState(shippingAddress.postalCode);
+  const [country, setCountry] = useState(shippingAddress.country);
+
+  const dispatch = useDispatch();
 
   const submitHandler = (e) => {
     // Stop pge from reloading
     e.preventDefault();
-    console.log("Submitted");
+    // Dispatch saving action with the payload
+    dispatch(saveShippingAddress({ address, city, postalCode, country }));
+    // Move to payment
+    history.push("/payment");
   };
 
   return (
