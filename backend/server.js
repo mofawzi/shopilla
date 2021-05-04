@@ -6,6 +6,7 @@ import { notFound, errorHandler } from "./middleware/errorMiddleware.js";
 
 import productRoutes from "./routes/productRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 
 // Access environment variables
 dotenv.config();
@@ -26,6 +27,9 @@ app.use("/api/products", productRoutes);
 
 // User routes middleware
 app.use("/api/users", userRoutes);
+
+// Order routes middleware
+app.use("/api/orders", orderRoutes);
 
 // Error middleware 404
 app.use(notFound);
