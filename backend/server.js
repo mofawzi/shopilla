@@ -31,6 +31,11 @@ app.use("/api/users", userRoutes);
 // Order routes middleware
 app.use("/api/orders", orderRoutes);
 
+// Get paypal's client ID
+app.get("/api/config/paypal", (req, res) =>
+  res.send(process.env.PAYPAL_CLIENT_ID)
+);
+
 // Error middleware 404
 app.use(notFound);
 
