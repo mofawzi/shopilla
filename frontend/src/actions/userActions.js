@@ -14,6 +14,9 @@ import {
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
   USER_DETAILS_RESET,
+  USER_LIST_REQUEST,
+  USER_LIST_SUCCESS,
+  USER_LIST_FAIL,
 } from "../constants/userConstants";
 import { ORDER_MY_LIST_RESET } from "../constants/orderConstants";
 
@@ -197,6 +200,46 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     // Failed to login
     dispatch({
       type: USER_UPDATE_PROFILE_FAIL,
+      // First check for the error message in the backend
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// Get Users List
+export const listUsers = () => async (dispatch, getState) => {
+  try {
+    // Dispatch request action
+    dispatch({
+      type: USER_LIST_REQUEST,
+    });
+
+    // Get user info from state (logged in user object)
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    // Send content type and the  token in the headers
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/users`, config);
+
+    // Dispatch the success update action
+    dispatch({
+      type: USER_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    // Failed to login
+    dispatch({
+      type: USER_LIST_FAIL,
       // First check for the error message in the backend
       payload:
         error.response && error.response.data.message
