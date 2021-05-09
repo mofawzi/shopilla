@@ -18,6 +18,9 @@ import {
   USER_LIST_SUCCESS,
   USER_LIST_FAIL,
   USER_LIST_RESET,
+  USER_DELETE_REQUEST,
+  USER_DELETE_SUCCESS,
+  USER_DELETE_FAIL,
 } from "../constants/userConstants";
 import { ORDER_MY_LIST_RESET } from "../constants/orderConstants";
 
@@ -28,14 +31,12 @@ export const login = (email, password) => async (dispatch) => {
       type: USER_LOGIN_REQUEST,
     });
 
-    // Send content type in the header
     const config = {
       headers: {
         "Content-Type": "application/json",
       },
     };
 
-    // Make login request and destructure the data
     const { data } = await axios.post(
       "/api/users/login",
       { email, password },
@@ -51,7 +52,6 @@ export const login = (email, password) => async (dispatch) => {
     // Save user data to local storage
     localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
-    // Failed to login
     dispatch({
       type: USER_LOGIN_FAIL,
       // First check for the error message in the backend
@@ -117,7 +117,6 @@ export const register = (name, email, password) => async (dispatch) => {
     // Save user data to local storage
     localStorage.setItem("userInfo", JSON.stringify(data));
   } catch (error) {
-    // Failed to login
     dispatch({
       type: USER_REGISTER_FAIL,
       // First check for the error message in the backend
@@ -159,7 +158,6 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
       payload: data,
     });
   } catch (error) {
-    // Failed to login
     dispatch({
       type: USER_DETAILS_FAIL,
       // First check for the error message in the backend
@@ -201,7 +199,6 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
       payload: data,
     });
   } catch (error) {
-    // Failed to login
     dispatch({
       type: USER_UPDATE_PROFILE_FAIL,
       // First check for the error message in the backend
@@ -241,9 +238,46 @@ export const listUsers = () => async (dispatch, getState) => {
       payload: data,
     });
   } catch (error) {
-    // Failed to login
     dispatch({
       type: USER_LIST_FAIL,
+      // First check for the error message in the backend
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// Delete user
+export const deleteUser = (id) => async (dispatch, getState) => {
+  try {
+    // Dispatch request action
+    dispatch({
+      type: USER_DELETE_REQUEST,
+    });
+
+    // Get user info from state (logged in user object)
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    // Send content type and the  token in the headers
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.delete(`/api/users/${id}`, config);
+
+    // Dispatch the success update action
+    dispatch({
+      type: USER_DELETE_SUCCESS,
+    });
+  } catch (error) {
+    dispatch({
+      type: USER_DELETE_FAIL,
       // First check for the error message in the backend
       payload:
         error.response && error.response.data.message
