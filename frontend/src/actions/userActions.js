@@ -269,7 +269,7 @@ export const deleteUser = (id) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.delete(`/api/users/${id}`, config);
+    await axios.delete(`/api/users/${id}`, config);
 
     // Dispatch the success update action
     dispatch({
