@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { PayPalButton } from "react-paypal-button-v2";
-import { Row, Col, Button, ListGroup, Image, Card } from "react-bootstrap";
+import { Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import Message from "../components/Message";
@@ -184,20 +184,6 @@ const OrderScreen = ({ match }) => {
                   {!sdkReady ? (
                     <Loader />
                   ) : (
-                    // <PayPalButton
-                    //   amount={order.totalPrice}
-                    //   onSuccess={(details, data) => {
-                    //     alert(
-                    //       "Transaction completed by " +
-                    //         details.payer.name.given_name
-                    //     );
-                    //   }}
-                    //   catchError={(err) => console.log(err)}
-                    //   onApprove={async (details, actions) => {
-                    //     await actions.order.capture();
-                    //   }}
-                    // />
-
                     <PayPalButton
                       amount={order.totalPrice}
                       onSuccess={successPaymentHandler}
