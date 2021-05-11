@@ -12,6 +12,9 @@ import {
   ORDER_MY_LIST_REQUEST,
   ORDER_MY_LIST_SUCCESS,
   ORDER_MY_LIST_FAIL,
+  ORDER_LIST_REQUEST,
+  ORDER_LIST_SUCCESS,
+  ORDER_LIST_FAIL,
 } from "../constants/orderConstants";
 
 // Action creator --> Create order
@@ -94,51 +97,49 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
 };
 
 // Action creator --> Pay order
-export const payOrder = (orderId, paymentResult) => async (
-  dispatch,
-  getState
-) => {
-  try {
-    // Dispatch request action
-    dispatch({
-      type: ORDER_PAY_REQUEST,
-    });
+export const payOrder =
+  (orderId, paymentResult) => async (dispatch, getState) => {
+    try {
+      // Dispatch request action
+      dispatch({
+        type: ORDER_PAY_REQUEST,
+      });
 
-    // Get user info from state (logged in user object)
-    const {
-      userLogin: { userInfo },
-    } = getState();
+      // Get user info from state (logged in user object)
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-    // Send content type and the  token in the headers
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
+      // Send content type and the  token in the headers
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      };
 
-    const { data } = await axios.put(
-      `/api/orders/${orderId}/pay`,
-      paymentResult,
-      config
-    );
+      const { data } = await axios.put(
+        `/api/orders/${orderId}/pay`,
+        paymentResult,
+        config
+      );
 
-    // Dispatch the success update action
-    dispatch({
-      type: ORDER_PAY_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: ORDER_PAY_FAIL,
-      // First check for the error message in the backend
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    });
-  }
-};
+      // Dispatch the success update action
+      dispatch({
+        type: ORDER_PAY_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ORDER_PAY_FAIL,
+        // First check for the error message in the backend
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      });
+    }
+  };
 
 // Action creator --> My list order
 export const myOrdersList = () => async (dispatch, getState) => {
@@ -171,6 +172,45 @@ export const myOrdersList = () => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: ORDER_MY_LIST_FAIL,
+      // First check for the error message in the backend
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+// Action creator --> List orders (Admin)
+export const listOrders = () => async (dispatch, getState) => {
+  try {
+    // Dispatch request action
+    dispatch({
+      type: ORDER_LIST_REQUEST,
+    });
+
+    // Get user info from state (logged in user object)
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    // Send content type and the  token in the headers
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.get(`/api/orders`, config);
+
+    // Dispatch the success update action
+    dispatch({
+      type: ORDER_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ORDER_LIST_FAIL,
       // First check for the error message in the backend
       payload:
         error.response && error.response.data.message

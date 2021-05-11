@@ -23,6 +23,7 @@ import {
   orderDetailsReducer,
   orderPayReducer,
   orderMyListReducer,
+  orderListReducer,
 } from "./reducers/orderReducers";
 
 // Main Reducer
@@ -44,6 +45,7 @@ const reducer = combineReducers({
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,
   orderMyList: orderMyListReducer,
+  orderList: orderListReducer,
 });
 
 // Get cart items from local storage
