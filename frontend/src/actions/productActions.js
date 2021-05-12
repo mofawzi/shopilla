@@ -18,6 +18,9 @@ import {
   PRODUCT_CREATE_REVIEW_REQUEST,
   PRODUCT_CREATE_REVIEW_SUCCESS,
   PRODUCT_CREATE_REVIEW_FAIL,
+  PRODUCT_TOP_REQUEST,
+  PRODUCT_TOP_SUCCESS,
+  PRODUCT_TOP_FAIL,
 } from "../constants/productConstants";
 
 // Action creator --> get products list
@@ -230,3 +233,26 @@ export const createProductReview =
       });
     }
   };
+
+// Action creator --> Get top rated products
+export const listTopProducts = () => async (dispatch) => {
+  try {
+    // Dispatch the request action for loading
+    dispatch({ type: PRODUCT_TOP_REQUEST });
+
+    // Fetch the data from backend
+    const { data } = await axios.get(`/api/products/top`);
+
+    // Send data to the reducer through the payload
+    dispatch({ type: PRODUCT_TOP_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_TOP_FAIL,
+      // First check for the error message in the backend
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
