@@ -22,14 +22,16 @@ import {
 
 // Action creator --> get products list
 export const listProducts =
-  (keyword = "") =>
+  (keyword = "", pageNumber = "") =>
   async (dispatch) => {
     try {
       // Dispatch the request action for loading
       dispatch({ type: PRODUCT_LIST_REQUEST });
 
       // Fetch the data from backend
-      const { data } = await axios.get(`/api/products?keyword=${keyword}`);
+      const { data } = await axios.get(
+        `/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
+      );
 
       // Send data to the reducer through the payload
       dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
