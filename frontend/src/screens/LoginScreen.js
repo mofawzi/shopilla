@@ -6,6 +6,7 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
 import { login } from "../actions/userActions";
+import Meta from "../components/Meta";
 
 const LoginScreen = ({ history, location }) => {
   // Set component level state -> initialization
@@ -38,6 +39,7 @@ const LoginScreen = ({ history, location }) => {
 
   return (
     <FormContainer>
+      <Meta title="Login | Shopilla" />
       <h1>Sign In</h1>
       {/* Check for loading or errors */}
       {error && <Message varient="danger">{error}</Message>}

@@ -6,6 +6,7 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { getUserDetails, updateUserProfile } from "../actions/userActions";
 import { myOrdersList } from "../actions/orderActions";
+import Meta from "../components/Meta";
 
 const ProfileScreen = ({ history, location }) => {
   // Set component level state -> initialization
@@ -76,6 +77,7 @@ const ProfileScreen = ({ history, location }) => {
         {loading && <Loader />}
 
         <Form onSubmit={submitHandler}>
+          <Meta title={`${user.name} | Shopilla`} />
           <Form.Group controlId="name">
             <Form.Label>Name</Form.Label>
             <Form.Control

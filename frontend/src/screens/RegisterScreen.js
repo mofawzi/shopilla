@@ -6,6 +6,7 @@ import Message from "../components/Message";
 import Loader from "../components/Loader";
 import FormContainer from "../components/FormContainer";
 import { register } from "../actions/userActions";
+import Meta from "../components/Meta";
 
 const RegisterScreen = ({ history, location }) => {
   // Set component level state -> initialization
@@ -53,6 +54,7 @@ const RegisterScreen = ({ history, location }) => {
       {loading && <Loader />}
 
       <Form onSubmit={submitHandler}>
+        <Meta title="Register | Shopilla" />
         <Form.Group controlId="name">
           <Form.Label>Name</Form.Label>
           <Form.Control
