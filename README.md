@@ -10,7 +10,7 @@ An eCommerce platform built with the MERN stack & Redux..
 
 -✨ [ Shopilla ](https://shopilla.herokuapp.com/) ✨
 
-![screenshot](https://drive.google.com/file/d/1uKA-z2E774OeDylkNmiqSK_vdcPKOtpW/view?usp=sharing)
+<img src="./frontend/public/images/Shopilla-Home.png" width="1000">
 
 ## Technologies used for this project
 
