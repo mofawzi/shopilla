@@ -27,9 +27,6 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-// Home Route
-app.get("/", (req, res) => res.send("API is running... "));
-
 // Product routes middleware
 app.use("/api/products", productRoutes);
 
@@ -50,6 +47,19 @@ app.get("/api/config/paypal", (req, res) =>
 // Make Uploads folder static (Getting loaded in the browser)
 const __dirname = path.resolve();
 app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
+
+// Handle Production
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "/frontend/build")));
+
+  // Take any foreign route to index.html
+  app.get("*", (req, res) =>
+    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"))
+  );
+} else {
+  // Home Route
+  app.get("/", (req, res) => res.send("API is running... "));
+}
 
 // Error middleware 404
 app.use(notFound);
